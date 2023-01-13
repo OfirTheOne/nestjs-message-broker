@@ -86,7 +86,7 @@ export class MessageBrokerModule {
       scope: Scope.TRANSIENT,
       useFactory: (config: MessageBrokerModuleConfigCore): MessageBrokerService =>
         new MessageBrokerService(new messageBrokerProvider(config, console)),
-      inject: [toConfigToken(provider.token)]
+      inject: [toConfigToken(provider.token), ...(provider.inject || [])]
     }));
 
     const exportedTokens = config.providers.map(provider => provider.token);

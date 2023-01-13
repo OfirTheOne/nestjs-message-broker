@@ -1,10 +1,31 @@
-import { MessageBrokerModule } from '@app/message-broker';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AppMessageBrokerModule } from './message-broker/message-broker.module';
+
+import * as path from 'path';
+
+const envFilePath = path.join('./config', `${process.env.ENV || 'default'}.cfg`);
+
+@Global()
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: envFilePath
+    }),
+    AppMessageBrokerModule
+  ],
+  exports: [
+    ConfigModule,
+    // AppMessageBrokerModule,
+  ]
+})
+export class SharedModule {}
+
 
 @Module({
-  imports: [MessageBrokerModule],
+  imports: [SharedModule],
   controllers: [AppController],
   providers: [AppService],
 })

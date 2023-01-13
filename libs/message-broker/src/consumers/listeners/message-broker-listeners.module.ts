@@ -1,11 +1,10 @@
 import { DynamicModule, Inject, Module, ModuleMetadata, OnApplicationBootstrap, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { MessageBrokerService } from '../../message-broker.service';
-import { TopicListener } from '@app/message-broker/models/topic-listener.interface';
+import { TopicListener } from '../../models/topic-listener.interface';
+import { constants } from './../../constants';
 
-const LISTERS_TOKEN = 'LISTERS_TOKEN';
-
-type Listeners = { topicListener: Type, mbServiceToken: string }[];
+type Listeners = { topicListener: Type<TopicListener>, mbServiceToken: string }[];
 
 @Module({
   imports: [],
@@ -18,9 +17,9 @@ export class MessageBrokerListenersModule implements OnApplicationBootstrap {
       module: MessageBrokerListenersModule,
       imports: metadata.imports,
       providers: [
-        ...(metadata.providers || []),
+        ...(metadata.providers || []), ...metadata.listeners.map(l => l.topicListener),
         {
-          provide: LISTERS_TOKEN,
+          provide: constants.LISTERS_TOKEN,
           useValue: metadata.listeners
         }
       ],
@@ -30,9 +29,8 @@ export class MessageBrokerListenersModule implements OnApplicationBootstrap {
 
   constructor(
     protected readonly moduleRef: ModuleRef,
-    @Inject(LISTERS_TOKEN) protected readonly listeners: Listeners
-  ) {
-  }
+    @Inject(constants.LISTERS_TOKEN) protected readonly listeners: Listeners
+  ) { }
 
   async onApplicationBootstrap(): Promise<void> {
     for (let listener of this.listeners) {
@@ -40,7 +38,7 @@ export class MessageBrokerListenersModule implements OnApplicationBootstrap {
     }
   }
 
-  private async listen(topicListener: Type, messageBrokerServiceToken: string) {
+  private async listen(topicListener: Type<TopicListener>, messageBrokerServiceToken: string) {
     const topicListenerService = await this.moduleRef.resolve<TopicListener>(topicListener, undefined, { strict: false });
     if (topicListenerService.shouldListen()) {
       const msgBrokerMatadorService = await this.moduleRef.resolve<MessageBrokerService>(messageBrokerServiceToken, undefined, { strict: false });

@@ -18,7 +18,6 @@ import {
   MessageBrokerCoreModuleSingleConfig, 
   MessageBrokerModuleConfigCore, 
   MessageBrokerModuleMultipleConfig } from './models/message-broker-module-config.interface';
-import { CorrelationService } from '@fpsp/http-plugins';
 
 
 describe('MessageBrokerModule', () => {
@@ -27,10 +26,6 @@ describe('MessageBrokerModule', () => {
     debug: jest.fn(),
     error: jest.fn(),
   });
-  const correlationServiceMock: Partial<CorrelationService> = {
-    generateCorrelationId: jest.fn(),
-    setHttpCorrelationHeaders: jest.fn()
-  };
 
 
   const buildTestingModule: (configFactory: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig) =>
@@ -41,8 +36,6 @@ describe('MessageBrokerModule', () => {
       })
         .overrideProvider(Logger)
         .useValue(loggerMockFactory())
-        .overrideProvider(CorrelationService)
-        .useValue(correlationServiceMock)
         .compile();
 
     };
