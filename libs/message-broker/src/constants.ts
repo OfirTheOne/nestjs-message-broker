@@ -1,0 +1,6 @@
+export const constants = Object.freeze({
+  MESSAGE_BROKER_CONFIG: 'MESSAGE_BROKER_CONFIG',
+  MESSAGE_BROKER_PROVIDER: 'MESSAGE_BROKER_PROVIDER',
+});
+
+
