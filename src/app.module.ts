@@ -18,7 +18,7 @@ const envFilePath = path.join('./config', `${process.env.ENV || 'default'}.cfg`)
   ],
   exports: [
     ConfigModule,
-    // AppMessageBrokerModule,
+    AppMessageBrokerModule,
   ]
 })
 export class SharedModule {}

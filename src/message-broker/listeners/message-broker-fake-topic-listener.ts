@@ -10,8 +10,8 @@ export class MessageBrokerFakeTopicListener implements TopicListener {
   isMsgBrokerListenerDisabled: boolean;
 
   constructor(private config: ConfigService) {
-    this.topicName = this.config.get('FAKE_TOPIC_NAME');
-    this.subscriptionName = this.config.get('FAKE_SUBSCRIPTION_NAME');
+    this.topicName = this.config.get('FAKE_TOPIC_NAME_01');
+    this.subscriptionName = this.config.get('FAKE_SUBSCRIPTION_NAME_01');
     this.isMsgBrokerListenerDisabled = this.config.get('DISABLE_MESSAGE_BROKER_LISTENERS');
     if (this.isMsgBrokerListenerDisabled) {
       console.info('[MessageBrokerLyftTopicListener:constructor] ignoring events for topic %s (DISABLE_MESSAGE_BROKER_LISTENERS is true)',
