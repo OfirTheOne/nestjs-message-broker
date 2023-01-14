@@ -1,15 +1,15 @@
 import { DynamicModule, Module, Provider, Scope, Type } from '@nestjs/common';
-import { MessageBrokerService } from './message-broker.service';
+import { MessageBrokerService } from '../core/message-broker.service';
 import {
   MessageBrokerCoreModuleSingleConfig,
   MessageBrokerModuleMultipleConfig,
   MessageBrokerModuleConfigCore
-} from './models/message-broker-module-config.interface';
-import { constants } from './constants';
+} from '../models/message-broker-module-config.interface';
+import { constants } from '../constants';
 /**
  * to change strategy change the value of `Strategy` to other provider class.
  */
-import { MessageBrokerProvider } from './models/message-broker-provider.interface';
+import { MessageBrokerProvider } from '../models/message-broker-provider.interface';
 
 const toConfigToken = (token: string): string => `${token}_config`;
 
@@ -17,9 +17,8 @@ function isMessageBrokerModuleMultipleConfig(o: unknown): o is MessageBrokerModu
   return typeof o == 'object' && Object.getOwnPropertyNames(o).includes('providers');
 }
 
-@Module({
-})
-export class MessageBrokerModule {
+@Module({ })
+export class MessageBrokerConnectionModule {
 
   /**
    * @description
@@ -40,11 +39,14 @@ export class MessageBrokerModule {
    * 
    * @param config for this module. 
    */
-  static forRoot(messageBrokerProvider: Type<MessageBrokerProvider>, config: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig): DynamicModule {
+  static forRoot(
+    messageBrokerProvider: Type<MessageBrokerProvider>, 
+    config: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig
+  ): DynamicModule {
     if (isMessageBrokerModuleMultipleConfig(config)) {
-      return MessageBrokerModule.forMultipleConnection(messageBrokerProvider, config);
+      return MessageBrokerConnectionModule.forMultipleConnection(messageBrokerProvider, config);
     } else {
-      return MessageBrokerModule.forSingleConnection(messageBrokerProvider, config);
+      return MessageBrokerConnectionModule.forSingleConnection(messageBrokerProvider, config);
     }
   }
 
@@ -67,7 +69,7 @@ export class MessageBrokerModule {
         }
       ],
       exports: [MessageBrokerService],
-      module: MessageBrokerModule,
+      module: MessageBrokerConnectionModule,
     };
   }
 
@@ -95,7 +97,7 @@ export class MessageBrokerModule {
       imports: config.imports ? [...config.imports] : [],
       providers: [...providersConfig, ...providersFactory],
       exports: [...exportedTokens],
-      module: MessageBrokerModule
+      module: MessageBrokerConnectionModule
     };
   }
 }

@@ -1,6 +1,6 @@
 import { DynamicModule, Inject, Module, ModuleMetadata, OnApplicationBootstrap, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { MessageBrokerService } from '../../message-broker.service';
+import { MessageBrokerService } from '../../core/message-broker.service';
 import { TopicListener } from '../../models/topic-listener.interface';
 import { constants } from './../../constants';
 
@@ -23,7 +23,6 @@ export class MessageBrokerListenersModule implements OnApplicationBootstrap {
           useValue: metadata.listeners
         }
       ],
-
     }
   }
 

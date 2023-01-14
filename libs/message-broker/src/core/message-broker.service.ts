@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { constants } from './constants';
-import { ListenToTopicOptions, MessageBrokerProvider, PostMessageOptions, SubscriptionClose } from './models/message-broker-provider.interface';
-import { TopicListener } from './models/topic-listener.interface';
+import { constants } from '../constants';
+import { ListenToTopicOptions, MessageBrokerProvider, PostMessageOptions, SubscriptionClose } from '../models/message-broker-provider.interface';
+import { TopicListener } from '../models/topic-listener.interface';
 
 @Injectable()
 export class MessageBrokerService implements MessageBrokerProvider {

@@ -1,18 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MessageBrokerModule, MessageBrokerModuleConfigCore, MessageBrokerService } from '@app/message-broker';
+import { MessageBrokerConnectionModule, MessageBrokerModuleConfigCore } from '@app/message-broker';
 import { MessageBrokerListenersModule } from '@app/message-broker/consumers/listeners/message-broker-listeners.module';
 import { MessageBrokerFakeTopicListener } from './listeners/message-broker-fake-topic-listener';
 import { FakeQueueService } from './providers/fake-queue-provider/fake-queue.provider';
-import { 
-    MESSAGE_BROKER_FAKE_01_TOPIC_READ, 
-    MESSAGE_BROKER_FAKE_02_TOPIC_WRITE 
+import {
+    MESSAGE_BROKER_FAKE_01_TOPIC_READ,
+    MESSAGE_BROKER_FAKE_02_TOPIC_WRITE
 } from '../constants/constants';
-
 
 @Module({
     imports: [
-        MessageBrokerModule.forRoot(
+        MessageBrokerConnectionModule.forRoot(
             FakeQueueService,
             {
                 providers: [
@@ -41,8 +40,8 @@ import {
                     mbServiceToken: MESSAGE_BROKER_FAKE_01_TOPIC_READ
                 }
             ]
-        })   
+        })
     ],
-    exports: [MessageBrokerModule],
+    exports: [MessageBrokerConnectionModule],
 })
 export class AppMessageBrokerModule { }

@@ -21,17 +21,17 @@ class MockFakeQueueProvider implements MessageBrokerProvider {
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 // import { Levels, Logger, LoggerModule } from '@fpsp/logger';
-import { MessageBrokerModule } from './message-broker.module';
-import { MessageBrokerService } from './message-broker.service';
+import { MessageBrokerConnectionModule } from './message-broker-connection.module';
+import { MessageBrokerService } from '../core/message-broker.service';
 import {
   MessageBrokerCoreModuleSingleConfig, 
   MessageBrokerModuleConfigCore, 
-  MessageBrokerModuleMultipleConfig } from './models/message-broker-module-config.interface';
-import { ListenToTopicOptions, MessageBrokerProvider, PostMessageOptions, SubscriptionClose } from './models/message-broker-provider.interface';
-import { HandleErrorArgs, HandleMessageArgs, TopicListener } from './models/topic-listener.interface';
+  MessageBrokerModuleMultipleConfig } from '../models/message-broker-module-config.interface';
+import { ListenToTopicOptions, MessageBrokerProvider, PostMessageOptions, SubscriptionClose } from '../models/message-broker-provider.interface';
+import { HandleErrorArgs, HandleMessageArgs, TopicListener } from '../models/topic-listener.interface';
 
 
-describe('MessageBrokerModule', () => {
+describe('MessageBrokerConnectionModule', () => {
   const loggerMockFactory = (): Partial<Logger> => ({
     // info: jest.fn(),
     debug: jest.fn(),
@@ -42,8 +42,8 @@ describe('MessageBrokerModule', () => {
   const buildTestingModule: (configFactory: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig) =>
     Promise<TestingModule> = (configFactory: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig) => {
       return Test.createTestingModule({
-        imports: [MessageBrokerModule.forRoot(MockFakeQueueProvider, configFactory)],
-        exports: [MessageBrokerModule]
+        imports: [MessageBrokerConnectionModule.forRoot(MockFakeQueueProvider, configFactory)],
+        exports: [MessageBrokerConnectionModule]
       })
         .overrideProvider(Logger)
         .useValue(loggerMockFactory())

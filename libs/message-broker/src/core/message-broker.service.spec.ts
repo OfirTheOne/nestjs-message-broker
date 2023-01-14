@@ -1,5 +1,5 @@
 import { MessageBrokerService } from './message-broker.service';
-import { MessageBrokerProvider } from './models/message-broker-provider.interface';
+import { MessageBrokerProvider } from '../models/message-broker-provider.interface';
 
 
 describe('MessageBrokerService // partial', () => {
