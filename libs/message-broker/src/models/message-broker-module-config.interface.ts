@@ -1,4 +1,5 @@
-import { FactoryProvider, ModuleMetadata } from '@nestjs/common';
+import { FactoryProvider, ModuleMetadata, Type } from '@nestjs/common';
+import { MessageBrokerProvider } from './message-broker-provider.interface';
 
 export interface MessageBrokerModuleConfigCore {
     connectionString: string;
@@ -15,13 +16,19 @@ export interface MessageBrokerCoreModuleConfigFactory {
 }
 
 
-export interface MessageBrokerCoreModuleSingleConfig extends
-    Pick<ModuleMetadata, 'imports'>,
-    Pick<MessageBrokerCoreModuleConfigFactory, 'configFactory' | 'inject'> {
+interface MessageBrokerStrategyConfig {
+    strategy: Type<MessageBrokerProvider>
 }
 
+export interface MessageBrokerCoreModuleSingleConfig extends
+    Pick<ModuleMetadata, 'imports'>,
+    MessageBrokerStrategyConfig,
+    Pick<MessageBrokerCoreModuleConfigFactory, 'configFactory' | 'inject'> { }
 
-export interface MessageBrokerModuleMultipleConfig extends Pick<ModuleMetadata, 'imports'> {
-    providers: Array<MessageBrokerCoreModuleConfigFactory>
+
+export interface MessageBrokerModuleMultipleConfig extends 
+    Pick<ModuleMetadata, 'imports'>,
+    MessageBrokerStrategyConfig {
+        providers: Array<MessageBrokerCoreModuleConfigFactory>;
 }
 
