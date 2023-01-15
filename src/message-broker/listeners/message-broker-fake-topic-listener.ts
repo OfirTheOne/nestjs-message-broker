@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+// import { Injectable } from '@nestjs/common';
 import { HandleErrorArgs, HandleMessageArgs, TopicListener } from '@app/message-broker';
 import { ConfigService } from '@nestjs/config';
+import { TopicListenerInjectable } from '@app/message-broker/decorators/topic-listener.decorator';
+import { MESSAGE_BROKER_FAKE_01_TOPIC_READ } from '../../constants/constants';
 
-@Injectable()
+@TopicListenerInjectable({ connectionToken: MESSAGE_BROKER_FAKE_01_TOPIC_READ })
 export class MessageBrokerFakeTopicListener implements TopicListener {
 
   topicName: string;
