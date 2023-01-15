@@ -54,8 +54,7 @@ describe('MessageBrokerConnectionModule', () => {
   it('MessageBrokerService resolve expectedly.', async () => {
     const moduleRef = await buildTestingModule({
       strategy: createMockFakeQueueProvider(),
-      configFactory: () => ({ 
-        connectionString: 'sb://connection-string' }),
+      useFactory: () => ({ connectionString: 'sb://connection-string' }),
       // imports: [LoggerModule]
     });
     const messageBrokerService = await moduleRef.resolve<MessageBrokerService>(MessageBrokerService);
@@ -68,8 +67,8 @@ describe('MessageBrokerConnectionModule', () => {
     const moduleRef = await buildTestingModule({
       strategy: createMockFakeQueueProvider(),
       providers: [{
-        token: serviceToken,
-        configFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://connection-string' })
+        provide: serviceToken,
+        useFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://connection-string' })
       }],
       // imports: [LoggerModule.forRoot({ useFactory: () => ({ logLevel: Levels.debug }) })]
     });
@@ -84,11 +83,11 @@ describe('MessageBrokerConnectionModule', () => {
     const moduleRef = await buildTestingModule({
       strategy: createMockFakeQueueProvider(),
       providers: [{
-        token: writeServiceToken,
-        configFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://write-connection-string' })
+        provide: writeServiceToken,
+        useFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://write-connection-string' })
       }, {
-        token: readServiceToken,
-        configFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://read-connection-string' })
+        provide: readServiceToken,
+        useFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://read-connection-string' })
       }],
       // imports: [LoggerModule.forRoot({ useFactory: () => ({ logLevel: Levels.debug }) })]
     });

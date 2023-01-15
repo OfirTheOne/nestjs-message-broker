@@ -15,28 +15,26 @@ import {
             strategy: FakeQueueService,
             providers: [
                 {
-                    configFactory: (config: ConfigService): MessageBrokerModuleConfigCore => ({
+                    useFactory: (config: ConfigService): MessageBrokerModuleConfigCore => ({
                         connectionString: config.get('SERVICEBUS_SUB_CONNECTION_FAKE_01'),
                     }),
                     inject: [ConfigService],
-                    token: MESSAGE_BROKER_FAKE_01_TOPIC_READ,
+                    provide: MESSAGE_BROKER_FAKE_01_TOPIC_READ,
                 },
                 {
-                    configFactory: (config: ConfigService): MessageBrokerModuleConfigCore => ({
+                    useFactory: (config: ConfigService): MessageBrokerModuleConfigCore => ({
                         connectionString: config.get('SERVICEBUS_PUB_CONNECTION_FAKE_02'),
                     }),
                     inject: [ConfigService],
-                    token: MESSAGE_BROKER_FAKE_02_TOPIC_WRITE,
+                    provide: MESSAGE_BROKER_FAKE_02_TOPIC_WRITE,
                 },
             ]
         }),
         MessageBrokerListenersModule.forRoot({
             providers: [ConfigService],
             listeners: [
-                {
-                    listenerClass: MessageBrokerFakeTopicListener,
-                    connectionToken: MESSAGE_BROKER_FAKE_01_TOPIC_READ
-                }
+                MessageBrokerFakeTopicListener,
+                // more listeners here ... 
             ]
         })
     ],

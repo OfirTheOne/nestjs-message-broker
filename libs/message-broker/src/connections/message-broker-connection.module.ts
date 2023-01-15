@@ -1,4 +1,4 @@
-import { DynamicModule, Module, Provider, Scope, Type } from '@nestjs/common';
+import { DynamicModule, FactoryProvider, InjectionToken, Module, Provider, Scope, Type } from '@nestjs/common';
 import { MessageBrokerService } from '../core/message-broker.service';
 import {
   MessageBrokerCoreModuleSingleConfig,
@@ -11,7 +11,7 @@ import { constants } from '../constants';
  */
 import { MessageBrokerProvider } from '../models/message-broker-provider.interface';
 
-const toConfigToken = (token: string): string => `${token}_config`;
+const toConfigToken = (token: InjectionToken): string => `${String(token)}_config`;
 
 function isMessageBrokerModuleMultipleConfig(o: unknown): o is MessageBrokerModuleMultipleConfig {
   return typeof o == 'object' && Object.getOwnPropertyNames(o).includes('providers');
@@ -62,7 +62,7 @@ export class MessageBrokerConnectionModule {
         },
         {
           provide: constants.MESSAGE_BROKER_CONFIG,
-          useFactory: config.configFactory,
+          useFactory: config.useFactory,
           inject: config.inject,
         }
       ],
@@ -74,21 +74,21 @@ export class MessageBrokerConnectionModule {
   private static forMultipleConnection(
     config: MessageBrokerModuleMultipleConfig
   ): DynamicModule {
-    const providersConfig: Array<Provider> = config.providers.map(provider => ({
-      provide: toConfigToken(provider.token),
-      useFactory: provider.configFactory,
+    const providersConfig: Array<FactoryProvider> = config.providers.map(provider => ({
+      provide: toConfigToken(provider.provide),
+      useFactory: provider.useFactory,
       inject: provider.inject,
     }));
 
     const providersFactory = config.providers.map(provider => ({
-      provide: provider.token,
+      provide: provider.provide,
       scope: Scope.TRANSIENT,
       useFactory: (connectionConfig: MessageBrokerModuleConfigCore): MessageBrokerService =>
         new MessageBrokerService(new (config.strategy)(connectionConfig, console)),
-      inject: [toConfigToken(provider.token), ...(provider.inject || [])]
+      inject: [toConfigToken(provider.provide), ...(provider.inject || [])]
     }));
 
-    const exportedTokens = config.providers.map(provider => provider.token);
+    const exportedTokens = config.providers.map(provider => provider.provide);
 
     return {
       imports: config.imports ? [...config.imports] : [],
