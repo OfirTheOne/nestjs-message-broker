@@ -39,19 +39,17 @@ export class MessageBrokerConnectionModule {
    * 
    * @param config for this module. 
    */
-  static forRoot(
-    messageBrokerProvider: Type<MessageBrokerProvider>, 
+  static forRoot( 
     config: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig
   ): DynamicModule {
     if (isMessageBrokerModuleMultipleConfig(config)) {
-      return MessageBrokerConnectionModule.forMultipleConnection(messageBrokerProvider, config);
+      return MessageBrokerConnectionModule.forMultipleConnection(config);
     } else {
-      return MessageBrokerConnectionModule.forSingleConnection(messageBrokerProvider, config);
+      return MessageBrokerConnectionModule.forSingleConnection(config);
     }
   }
 
   private static forSingleConnection(
-    messageBrokerProvider: Type<MessageBrokerProvider>, 
     config: MessageBrokerCoreModuleSingleConfig
   ): DynamicModule {
     return {
@@ -60,7 +58,7 @@ export class MessageBrokerConnectionModule {
         MessageBrokerService,
         {
           provide: constants.MESSAGE_BROKER_PROVIDER,
-          useClass: messageBrokerProvider
+          useClass: config.strategy
         },
         {
           provide: constants.MESSAGE_BROKER_CONFIG,
@@ -74,7 +72,6 @@ export class MessageBrokerConnectionModule {
   }
 
   private static forMultipleConnection(
-    messageBrokerProvider: Type<MessageBrokerProvider>, 
     config: MessageBrokerModuleMultipleConfig
   ): DynamicModule {
     const providersConfig: Array<Provider> = config.providers.map(provider => ({
@@ -86,8 +83,8 @@ export class MessageBrokerConnectionModule {
     const providersFactory = config.providers.map(provider => ({
       provide: provider.token,
       scope: Scope.TRANSIENT,
-      useFactory: (config: MessageBrokerModuleConfigCore): MessageBrokerService =>
-        new MessageBrokerService(new messageBrokerProvider(config, console)),
+      useFactory: (connectionConfig: MessageBrokerModuleConfigCore): MessageBrokerService =>
+        new MessageBrokerService(new (config.strategy)(connectionConfig, console)),
       inject: [toConfigToken(provider.token), ...(provider.inject || [])]
     }));
 

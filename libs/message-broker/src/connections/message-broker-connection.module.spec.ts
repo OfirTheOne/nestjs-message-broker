@@ -10,7 +10,7 @@ jest.mock('./providers/service-bus-provider/service-bus-provider', () => {
   };
 });
 
-class MockFakeQueueProvider implements MessageBrokerProvider {
+const createMockFakeQueueProvider = () => class MockFakeQueueProvider implements MessageBrokerProvider {
   listenToTopic: (listener: TopicListener, options?: ListenToTopicOptions) => SubscriptionClose = jest.fn();
   listenToQueue: (queueName: string) => Promise<boolean> = jest.fn();
   isTopicListenerConnected: (topicListener: TopicListener) => boolean = jest.fn();
@@ -42,7 +42,7 @@ describe('MessageBrokerConnectionModule', () => {
   const buildTestingModule: (configFactory: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig) =>
     Promise<TestingModule> = (configFactory: MessageBrokerCoreModuleSingleConfig | MessageBrokerModuleMultipleConfig) => {
       return Test.createTestingModule({
-        imports: [MessageBrokerConnectionModule.forRoot(MockFakeQueueProvider, configFactory)],
+        imports: [MessageBrokerConnectionModule.forRoot(configFactory)],
         exports: [MessageBrokerConnectionModule]
       })
         .overrideProvider(Logger)
@@ -53,7 +53,9 @@ describe('MessageBrokerConnectionModule', () => {
 
   it('MessageBrokerService resolve expectedly.', async () => {
     const moduleRef = await buildTestingModule({
-      configFactory: () => ({ connectionString: 'sb://connection-string' }),
+      strategy: createMockFakeQueueProvider(),
+      configFactory: () => ({ 
+        connectionString: 'sb://connection-string' }),
       // imports: [LoggerModule]
     });
     const messageBrokerService = await moduleRef.resolve<MessageBrokerService>(MessageBrokerService);
@@ -64,6 +66,7 @@ describe('MessageBrokerConnectionModule', () => {
   it('single MessageBrokerService instance resolved using serviceInjectToken as expected.', async () => {
     const serviceToken = 'writeMessageBroker';
     const moduleRef = await buildTestingModule({
+      strategy: createMockFakeQueueProvider(),
       providers: [{
         token: serviceToken,
         configFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://connection-string' })
@@ -79,6 +82,7 @@ describe('MessageBrokerConnectionModule', () => {
     const writeServiceToken = 'writeMessageBroker';
     const readServiceToken = 'readMessageBroker';
     const moduleRef = await buildTestingModule({
+      strategy: createMockFakeQueueProvider(),
       providers: [{
         token: writeServiceToken,
         configFactory: (): MessageBrokerModuleConfigCore => ({ connectionString: 'sb://write-connection-string' })
