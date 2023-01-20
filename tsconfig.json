@@ -19,10 +19,10 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@app/message-broker": [
-        "libs/message-broker/src"
+        "lib/message-broker/src"
       ],
       "@app/message-broker/*": [
-        "libs/message-broker/src/*"
+        "lib/message-broker/src/*"
       ]
     }
   }
