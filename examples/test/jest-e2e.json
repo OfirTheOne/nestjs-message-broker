@@ -11,7 +11,7 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@app/message-broker/(.*)": "<rootDir>/../libs/message-broker/src/$1",
-    "@app/message-broker": "<rootDir>/../libs/message-broker/src"
+    "@app/message-broker/(.*)": "<rootDir>/../../lib/message-broker/src/$1",
+    "@app/message-broker": "<rootDir>/../../lib/message-broker/src"
   }
 }
