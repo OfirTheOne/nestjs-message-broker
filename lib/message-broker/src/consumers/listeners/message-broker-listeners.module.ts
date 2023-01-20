@@ -3,7 +3,7 @@ import { DynamicModule, Inject, Module, ModuleMetadata, OnApplicationBootstrap, 
 import { ModuleRef } from '@nestjs/core';
 import { MessageBrokerService } from '../../core/message-broker.service';
 import { TopicListener } from '../../models/topic-listener.interface';
-import { constants } from './../../constants';
+import { constants } from '../../constants';
 
 interface ListenerOptions {
   connectionToken: string;

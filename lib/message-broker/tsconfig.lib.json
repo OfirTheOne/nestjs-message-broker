@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "../../dist/lib/message-broker"
+  },
+  "include": ["lib/**/*", "package.json"],
+  "exclude": ["node_modules", "dist", "test", "examples", "**/*spec.ts"]
+}
