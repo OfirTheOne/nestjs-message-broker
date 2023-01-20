@@ -13,7 +13,7 @@
 // import { Logger } from '@fpsp/logger';
 // import { MessageBrokerModuleConfigCore } from '../../../../libs/message-broker/src/models/message-broker-module-config.interface';
 // import { ListenToTopicOptions, MessageBrokerProvider, PostMessageOptions, SubscriptionClose } from '../../../../libs/message-broker/src/models/message-broker-provider.interface';
-import { TopicListener } from '@app/message-broker';
+import { TopicListener } from '@nestjs-ext/message-broker';
 // import { constants } from '../../../../libs/message-broker/src/constants';
 // import { pick } from 'lodash';
 // import { InvalidArgumentException } from '../../../../libs/message-broker/src/errors/invalid-arguments-exception';

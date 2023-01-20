@@ -19,13 +19,13 @@ jest.mock('@azure/service-bus', () => {
   };
 });
 
-import { PostMessageOptions } from '../../../../libs/message-broker/src/models/message-broker-provider.interface';
+import { PostMessageOptions } from '../../../../../lib/message-broker/src/models/message-broker-provider.interface';
 import { Logger } from '@fpsp/logger';
-import { ListenToTopicOptions } from '../../../../libs/message-broker/src/models/message-broker-provider.interface';
-import { TopicListener } from '../../../../libs/message-broker/src/models/topic-listener.interface';
-import { MessageBrokerModuleConfigCore } from '../../../../libs/message-broker/src/models/message-broker-module-config.interface';
+import { ListenToTopicOptions } from '../../../../../lib/message-broker/src/models/message-broker-provider.interface';
+import { TopicListener } from '../../../../../lib/message-broker/src/models/topic-listener.interface';
+import { MessageBrokerModuleConfigCore } from '../../../../../lib/message-broker/src/models/message-broker-module-config.interface';
 import { ServiceBusService } from './service-bus-provider';
-import { InvalidArgumentException } from '../../../../libs/message-broker/src/errors/invalid-arguments-exception';
+import { InvalidArgumentException } from '../../../../../lib/message-broker/src/errors/invalid-arguments-exception';
 import { CorrelationService } from '@fpsp/http-plugins';
 import { C3Context, DataContextService } from '@fpsp/context';
 import { ServiceBusReceiver } from '@azure/service-bus';
