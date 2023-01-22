@@ -7,8 +7,8 @@ import {
     PostMessageOptions, 
     SubscriptionClose,
     MessageBrokerModuleConfigCore
- } from '@app/message-broker';
- import { constants } from '@app/message-broker/constants';
+ } from '@nestjs-ext/message-broker';
+ import { constants } from '@nestjs-ext/message-broker/dist/constants';
 
 
 @Injectable()

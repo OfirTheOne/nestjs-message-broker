@@ -1,4 +1,4 @@
-import { MessageBrokerService, MessagePublisherProvider } from '@app/message-broker';
+import { MessageBrokerService, MessagePublisherProvider } from '@nestjs-ext/message-broker';
 import { Inject, Injectable } from '@nestjs/common';
 import { MESSAGE_BROKER_FAKE_02_TOPIC_WRITE } from './constants/constants';
 
