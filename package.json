@@ -1,6 +1,6 @@
 {
   "name": "@nestjs-ext/message-broker",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "description": "",
   "author": "Ofir G.",
   "license": "UNLICENSED",
@@ -31,8 +31,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0"
