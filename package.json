@@ -3,7 +3,7 @@
   "version": "0.0.1-beta.1",
   "description": "",
   "author": "Ofir G.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "files": [
     "dist/**/*",
     "*.md"
