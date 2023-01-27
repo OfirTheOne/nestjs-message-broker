@@ -1,15 +1,4 @@
 
-jest.mock('./providers/service-bus-provider/service-bus-provider', () => {
-  return {
-    ServiceBusService: class {
-      listenToTopic = jest.fn();
-      postMessageToTopic = jest.fn();
-      listenToQueue = jest.fn();
-      postMessageToQueue = jest.fn();
-    }
-  };
-});
-
 const createMockFakeQueueProvider = () => class MockFakeQueueProvider implements MessageBrokerProvider {
   listenToTopic: (listener: TopicListener, options?: ListenToTopicOptions) => SubscriptionClose = jest.fn();
   listenToQueue: (queueName: string) => Promise<boolean> = jest.fn();
