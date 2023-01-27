@@ -1,13 +1,9 @@
 {
-  "name": "@nestjs-ext/message-broker",
+  "name": "@nestjs-ext/message-broker-example-azure-service-bus",
   "version": "0.0.1-beta.1",
   "description": "",
   "author": "Ofir G.",
   "license": "UNLICENSED",
-  "files": [
-    "dist/**/*",
-    "*.md"
-  ],
   "main": "dist/index.js",
   "repository": {
     "type": "git",
@@ -17,10 +13,10 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.app.json",
     "build:nest": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"lib/**/*.ts\"",
-    "start:asb": "nest start --config \"examples/azure-service-bus/nest-cli.json\"",
+    "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -36,7 +32,9 @@
     "@nestjs/core": "^9.0.0"
   },
   "devDependencies": {
+    "@azure/service-bus": "^7.7.3",
     "@nestjs/cli": "^9.0.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -78,11 +76,15 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/lib/"
+      "<rootDir>/src/"
     ],
     "moduleNameMapper": {
       "^@app/message-broker(|/.*)$": "<rootDir>/lib/message-broker/src/$1"
     }
+  },
+  "dependencies": {
+    "@nestjs-ext/message-broker": "^0.0.1-beta.1",
+    "build": "^0.1.4",
+    "start": "^5.1.0"
   }
 }

@@ -17,11 +17,11 @@ import {
   MessageBrokerProvider, 
   PostMessageOptions, 
   SubscriptionClose,
-  TopicListener
-} from '@app/message-broker';
-import { constants } from '@app/message-broker/constants';
+  TopicListener,
+  InvalidArgumentException,
+  constants
+} from '@nestjs-ext/message-broker';
 import { pick } from 'lodash';
-import { InvalidArgumentException } from '@app/message-broker';
 
 export type SubscriptionsCacheEntry = {
   args: TopicListener;

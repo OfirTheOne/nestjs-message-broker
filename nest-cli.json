@@ -5,16 +5,5 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true
-  },
-  "projects": {
-    "message-broker": {
-      "type": "library",
-      "root": "lib/message-broker",
-      "entryFile": "index",
-      "sourceRoot": "lib/message-broker/src",
-      "compilerOptions": {
-        "tsConfigPath": "lib/message-broker/tsconfig.lib.json"
-      }
-    }
   }
 }

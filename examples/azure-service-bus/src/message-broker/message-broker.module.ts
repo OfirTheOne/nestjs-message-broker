@@ -3,16 +3,16 @@ import { ConfigService } from '@nestjs/config';
 import { MessageBrokerConnectionModule, MessageBrokerModuleConfigCore } from '@nestjs-ext/message-broker';
 import { MessageBrokerListenersModule } from '@nestjs-ext/message-broker';
 import { MessageBrokerFakeTopicListener } from './listeners/message-broker-fake-topic-listener';
-import { FakeQueueService } from './provider/fake-queue-provider/fake-queue.provider';
 import {
     MESSAGE_BROKER_FAKE_01_TOPIC_READ,
     MESSAGE_BROKER_FAKE_02_TOPIC_WRITE
 } from '../constants/constants';
+import { ServiceBusService } from './provider/service-bus-provider/service-bus-provider';
 
 @Module({
     imports: [
         MessageBrokerConnectionModule.forRoot({
-            strategy: FakeQueueService,
+            strategy: ServiceBusService,
             providers: [
                 {
                     useFactory: (config: ConfigService): MessageBrokerModuleConfigCore => ({
